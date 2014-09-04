@@ -138,7 +138,7 @@ public function getTables($db) {
     return json_encode($arr_t);
 }
 
-/* Devuelve json con las columnas que tiene la tabla de DB
+/* Devuelve json con las columnas que tiene la tabla de DB y el tipo de campo
 @$db: base de datos
 @table: tabla
  *  */
@@ -150,14 +150,12 @@ public function getColumns($db, $table) {
     $arr_t = array();
     $rt = $this->con->query("SHOW COLUMNS FROM " . $table . " FROM " . $db);
     
-    /*
-    while ($t = $rt->fetch_assoc()) {
-        //error_log($t[$colname]);
-        $arr_t[]= $t[$colname];
+    while ($c = $rt->fetch_assoc()) {
+        $arr_t[]= array($c['Field'],$c['Type']);
     }
-   */
+   
     $this->close_connection();
-    error_log(json_encode($arr_t));
+    //error_log(json_encode($arr_t));
     return json_encode($arr_t);
 }
 

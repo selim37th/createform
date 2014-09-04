@@ -48,5 +48,7 @@ Configuración del servidor.
 
     ya en el navegador debe funcionar : http://createform/
 
+    El directorio de trabajo debe tener permisos de escritura.
+
 
     

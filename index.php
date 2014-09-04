@@ -11,6 +11,7 @@ require_once './MysqlConnector.php';
 
 <html>
     <head>
+        <title>Create FORM</title>
         <style type="text/css">
             body {
                 font-family: sans-serif;
@@ -161,8 +162,8 @@ require_once './MysqlConnector.php';
             var ho = $("#host").val();
             var us = $("#user").val();
             var pw = $("#pw").val();
-            if (confirm("Selected DB " + db + ", Table: " + table + ". Confirm?")) {
-                alert("ok making");
+            //if (confirm("Selected DB " + db + ", Table: " + table + ". Confirm?")) {
+            //    alert("ok making");
                 
                 $.ajax({
                     type: "POST",
@@ -179,7 +180,7 @@ require_once './MysqlConnector.php';
                 });
                 
                 
-            }
+            //}
         });
         
     });
