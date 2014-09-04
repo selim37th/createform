@@ -148,9 +148,13 @@ function genera() {
             
             /* open file de salida */
             $fp = fopen("./output.php","w");
-            $salida = "\n<html>\n<head>\n<title>Title</title>\n<style type=\"text/css\">\n</style>\n<script type=\"text/javascript\" src=\"./path/to/js/jquery.min.js\">\n</script>\n</head>\n<body>\n";
+            
+            $salida = "\n<html>\n<head>\n<title>Title</title>\n<style type=\"text/css\">\n</style>\n<script type=\"text/javascript\" src=\"./js/jquery-1.11.1.min\">\n</script>\n</head>\n<body>\n";
             fwrite($fp, $salida . PHP_EOL);
 
+            $salida=sprintf("<form name=\"frm%s\" id=\"frm%s\" method=\"post\" action=\"\">\n", ucfirst($_POST['t']), ucfirst($_POST['t']));
+            fwrite($fp, $salida . PHP_EOL);
+            
             $salida="";
             
             foreach ($arr_campos as $value) {
@@ -175,22 +179,28 @@ function genera() {
 
                 switch ($s) {
                     case "numerico": /* put text field */
-                        $salida=$value[0] . " es numerico " . $value[1] . "\n";
+                        $salida=sprintf("<div class=\"bockColumn\"><label id=\"lbl%s\">%s</label><input type=\"text\" name=\"%s\" id=\"%s\" maxlength=\"8\" size=\"4\"></div>", $value[0], $value[0], $value[0], $value[0]);
                         break;
                     case "texto": /* put text field */
-                        $salida = $value[0] . " es texto " . $value[1] . "\n";
+                        $salida = sprintf("<div class=\"bockColumn\"><label id=\"lbl%s\">%s</label><textarea name=\"%s\" id=\"%s\" rows=\"4\" cols=\"50\" maxlength=\"255\"></textarea></div>", $value[0], $value[0], $value[0], $value[0]);
                         break;
                     case "caracteres": /* put text field */
-                        $salida = $value[0] . " es conj. caracteres " . $value[1] . "\n";
+                         /* calcula el max length */
+                        $ini = stripos($value[1], "(") + 1;
+                        $end = stripos($value[1], ")") - 1;
+                        $max = substr($value[1], $ini , $end - $ini + 1);
+                        $ncar = round((int)$max /4);
+                        error_log("ini:" . $ini . " end:" . $end. " maxlen:" . $max);
+                        $salida = sprintf("<div class=\"bockColumn\"><label id=\"lbl%s\">%s</label><input type=\"text\" name=\"%s\" id=\"%s\" maxlength=\"%u\" size=\"%u\"></div>", $value[0], $value[0], $value[0], $value[0], $max, $ncar);
                         break;
                     case "fecha": /* put date field */
-                        $salida = $value[0] . " es fecha " . $value[1] . "\n";
+                        $salida=sprintf("<div class=\"bockColumn\"><label id=\"lbl%s\">%s</label><input type=\"date\" name=\"%s\" id=\"%s\"></div>", $value[0], $value[0], $value[0], $value[0]);
                         break;
                     default: /* put text field */
                         $salida=$value[0] . " No definido " . $value[1] . "\n";
                         break;
                 }
-                error_log($value[1]);
+                //error_log($value[1]);
                 fwrite($fp, $salida);
                 
                 $s="";
@@ -203,7 +213,8 @@ function genera() {
             
             /* guarda salida en un fichero */
             
-            
+            $salida = "</form>";
+            fwrite($fp, $salida . PHP_EOL);
             $salida = "\n</body>\n</html>";
             fwrite($fp, $salida . PHP_EOL);
             fclose($fp);   
