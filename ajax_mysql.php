@@ -152,7 +152,11 @@ function genera() {
             $salida = "\n<html>\n<head>\n<title>Title</title>\n<style type=\"text/css\">\n</style>\n<script type=\"text/javascript\" src=\"./js/jquery-1.11.1.min\">\n</script>\n</head>\n<body>\n";
             fwrite($fp, $salida . PHP_EOL);
 
+            /********************************* Begin del FORM ********************************/
             $salida=sprintf("<form name=\"frm%s\" id=\"frm%s\" method=\"post\" action=\"\">\n", ucfirst($_POST['t']), ucfirst($_POST['t']));
+            fwrite($fp, $salida . PHP_EOL);
+            
+            $salida = sprintf("<fieldset><legend>%s</legend>",$_POST['t']);
             fwrite($fp, $salida . PHP_EOL);
             
             $salida="";
@@ -179,10 +183,10 @@ function genera() {
 
                 switch ($s) {
                     case "numerico": /* put text field */
-                        $salida=sprintf("<div class=\"bockColumn\"><label id=\"lbl%s\">%s</label><input type=\"text\" name=\"%s\" id=\"%s\" maxlength=\"8\" size=\"4\"></div>", $value[0], $value[0], $value[0], $value[0]);
+                        $salida=sprintf("<div class=\"blockField\"><label id=\"lbl%s\">%s</label><input type=\"text\" name=\"%s\" id=\"%s\" maxlength=\"8\" size=\"4\"></div>", $value[0], $value[0], $value[0], $value[0]);
                         break;
                     case "texto": /* put text field */
-                        $salida = sprintf("<div class=\"bockColumn\"><label id=\"lbl%s\">%s</label><textarea name=\"%s\" id=\"%s\" rows=\"4\" cols=\"50\" maxlength=\"255\"></textarea></div>", $value[0], $value[0], $value[0], $value[0]);
+                        $salida = sprintf("<div class=\"blockField\"><label id=\"lbl%s\">%s</label><textarea name=\"%s\" id=\"%s\" rows=\"4\" cols=\"50\" maxlength=\"255\"></textarea></div>", $value[0], $value[0], $value[0], $value[0]);
                         break;
                     case "caracteres": /* put text field */
                          /* calcula el max length */
@@ -190,18 +194,17 @@ function genera() {
                         $end = stripos($value[1], ")") - 1;
                         $max = substr($value[1], $ini , $end - $ini + 1);
                         $ncar = round((int)$max /4);
-                        error_log("ini:" . $ini . " end:" . $end. " maxlen:" . $max);
-                        $salida = sprintf("<div class=\"bockColumn\"><label id=\"lbl%s\">%s</label><input type=\"text\" name=\"%s\" id=\"%s\" maxlength=\"%u\" size=\"%u\"></div>", $value[0], $value[0], $value[0], $value[0], $max, $ncar);
+                        $salida = sprintf("<div class=\"blockField\"><label id=\"lbl%s\">%s</label><input type=\"text\" name=\"%s\" id=\"%s\" maxlength=\"%u\" size=\"%u\"></div>", $value[0], $value[0], $value[0], $value[0], $max, $ncar);
                         break;
                     case "fecha": /* put date field */
-                        $salida=sprintf("<div class=\"bockColumn\"><label id=\"lbl%s\">%s</label><input type=\"date\" name=\"%s\" id=\"%s\"></div>", $value[0], $value[0], $value[0], $value[0]);
+                        $salida=sprintf("<div class=\"blockField\"><label id=\"lbl%s\">%s</label><input type=\"date\" name=\"%s\" id=\"%s\"></div>", $value[0], $value[0], $value[0], $value[0]);
                         break;
                     default: /* put text field */
-                        $salida=$value[0] . " No definido " . $value[1] . "\n";
+                        $salida=$value[0] . " No definido " . $value[1];
                         break;
                 }
                 //error_log($value[1]);
-                fwrite($fp, $salida);
+                fwrite($fp, $salida . PHP_EOL);
                 
                 $s="";
                 $posint = false;
@@ -212,12 +215,29 @@ function genera() {
             }
             
             /* guarda salida en un fichero */
+            $salida = sprintf("</fieldset>");
+            fwrite($fp, $salida . PHP_EOL);
             
+            /* button submit and reset */
+            $salida = "<input type=\"submit\" id=\"submit\" value=\"Submit\">";
+            fwrite($fp, $salida . PHP_EOL);
+            $salida = "<input type=\"reset\" id=\"reset\" value=\"Reset\">";
+            fwrite($fp, $salida . PHP_EOL);
+            
+            /*******************************   END FORM ************************************/
             $salida = "</form>";
             fwrite($fp, $salida . PHP_EOL);
+            
             $salida = "\n</body>\n</html>";
             fwrite($fp, $salida . PHP_EOL);
-            fclose($fp);   
+            fclose($fp);  
+            
+            /* read file output.php 
+            and send to index.php
+             *              */
+            $texto = file_get_contents("./output.php"); //Leemos y guardamos en $texto el archivo texto.txt
+            //$texto = nl2br($texto); //Reemplazamos $texto con un nuevo $texto, pero cambiando los saltos de linea ( ) por un salto de linea en html (br)
+            echo $texto; // Mandamos a index
         }
         else {
             $msn = array(

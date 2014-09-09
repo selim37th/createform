@@ -11,6 +11,7 @@ require_once './MysqlConnector.php';
 
 <html>
     <head>
+        <meta charset="utf-8">
         <title>Create FORM</title>
         <style type="text/css">
             body {
@@ -35,24 +36,35 @@ require_once './MysqlConnector.php';
                 background-color: red;
                 border-color: activeborder;
                 width: 99%;
-                height: 100%;
+                height: 200px;
                 border-radius: 3px;
                 margin: 3px;
                 color: aliceblue;
                 padding: 3px;
                 font-size: 0.9em;
+                
             }
             
             #code {
-                background-color: black;
-                color: gainsboro;
-                padding: 5px;
-            }
+                background-color: gainsboro;
+                border-color: activeborder;
+                border-radius: 3px;
+                width: 99%;
+                color: black;
+                padding: 3px;
+                float: left;
+                margin: 3px;
+            }  
+        
         </style>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
         <script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
         
     </head>
     <script type="text/javascript">
+        
+    
     /* @ok se ha conectado y todo va bien con la mysql */
     var ok=0;
     
@@ -137,7 +149,7 @@ require_once './MysqlConnector.php';
         return false;    
         });
         
-        
+        /************    change database -> change tables  ****************/
         $("#db").change(function(){
             if (ok) {
                 /* del  #tables */
@@ -171,7 +183,9 @@ require_once './MysqlConnector.php';
                     data: {accion: 'genera',d:db,t:table,h:ho,u:us,p:pw},
                     async: false,
                     success: function(data, textStatus, xhr) {
-                        alert(data);
+                        /* alert(data); */
+                        $("#code").html(data);
+                        
                     },
                     error: function(jqXHR, status, error) {
                         alert('Error en llamada ajax');
@@ -220,13 +234,14 @@ require_once './MysqlConnector.php';
                     <button name="genera" id="genera">Create Code</button>
                 </div>
             </div>
-            <label>PHP OUT</label>
-            <pre id="code">
-                PHP output Code
-                
-            </pre>
             
-        </div>
+            </div>
+        
+            <pre id="code">
+               OUTPUT.PHP
+            </pre>
+           
+        
         
        
         
