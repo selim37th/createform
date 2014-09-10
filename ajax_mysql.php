@@ -183,7 +183,7 @@ function genera() {
 
                 switch ($s) {
                     case "numerico": /* put text field */
-                        $salida=sprintf("<div class=\"blockField\"><label id=\"lbl%s\">%s</label><input type=\"text\" name=\"%s\" id=\"%s\" maxlength=\"8\" size=\"4\"></div>", $value[0], $value[0], $value[0], $value[0]);
+                        $salida=sprintf("<div class=\"blockField\"><label id=\"lbl%s\">%s</label><input type=\"text\" name=\"%s\" id=\"%s\" maxlength=\"8\" size=\"4\" value=\"\"></div>", $value[0], $value[0], $value[0], $value[0]);
                         break;
                     case "texto": /* put text field */
                         $salida = sprintf("<div class=\"blockField\"><label id=\"lbl%s\">%s</label><textarea name=\"%s\" id=\"%s\" rows=\"4\" cols=\"50\" maxlength=\"255\"></textarea></div>", $value[0], $value[0], $value[0], $value[0]);
@@ -219,9 +219,9 @@ function genera() {
             fwrite($fp, $salida . PHP_EOL);
             
             /* button submit and reset */
-            $salida = "<input type=\"submit\" id=\"submit\" value=\"Submit\">";
+            $salida = "<fieldset id=\"botones\"><input type=\"submit\" id=\"submit\" value=\"Submit\">";
             fwrite($fp, $salida . PHP_EOL);
-            $salida = "<input type=\"reset\" id=\"reset\" value=\"Reset\">";
+            $salida = "<input type=\"reset\" id=\"reset\" value=\"Reset\"></fieldset>";
             fwrite($fp, $salida . PHP_EOL);
             
             /*******************************   END FORM ************************************/
